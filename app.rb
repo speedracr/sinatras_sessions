@@ -2,6 +2,7 @@ require       'sinatra'
 require       'sinatra/activerecord'
 require       'sinatra/reloader'
 require_relative  './twittertools'
+enable :sessions
 
 set :server, 'webrick'
 set :database, 'sqlite3:shopping.db'
@@ -11,8 +12,14 @@ class Question < ActiveRecord::Base
 end
 
 get "/?" do
+  session['test'] = 'Oh, hi there.'
   @questions = Question.all
   erb :"products/homepage"
+end
+
+get "/check" do
+  @cookie = session['test']
+  erb :"products/show"
 end
 
 ###### create a new question #####
